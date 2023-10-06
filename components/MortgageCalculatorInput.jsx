@@ -1,15 +1,48 @@
 import { set } from "date-fns";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export function MortgageCalculatorInput() {
   const [optionalExpensesOpen, setOptionalExpensesOpen] = useState(false);
   const [count, setCount] = useState(0);
+
+  const initialInputState = {
+    homeprice: "",
+    downpayment: "",
+    loanterm: "",
+    interestrate: "",
+    zipcode: "",
+    propertytax: "",
+    homeownerinsurance: "",
+    pmipermonth: "",
+    hoafee: "",
+  };
+
+  const [mortgageInputs, setMortgageInputs] = useState(initialInputState);
 
   const toggleOptionalExpenses = () => {
     setOptionalExpensesOpen(!optionalExpensesOpen);
     setCount(count + 1);
     console.log(count);
   };
+
+  // useEffect(() => {
+  //   console.log(mortgageInputs.homeprice);
+  // }, [mortgageInputs.homeprice]);
+
+  useEffect(() => {
+    console.log(mortgageInputs.homeprice);
+    console.log("hi");
+  }, [
+    mortgageInputs.homeprice,
+    mortgageInputs.downpayment,
+    mortgageInputs.loanterm,
+    mortgageInputs.interestrate,
+    mortgageInputs.zipcode,
+    mortgageInputs.propertytax,
+    mortgageInputs.homeownerinsurance,
+    mortgageInputs.pmipermonth,
+    mortgageInputs.hoafee,
+  ]);
 
   return (
     <>
@@ -20,6 +53,13 @@ export function MortgageCalculatorInput() {
             <input
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
+              value={mortgageInputs.homeprice}
+              onChange={(e) =>
+                setMortgageInputs({
+                  ...mortgageInputs,
+                  homeprice: e.target.value,
+                })
+              }
             />
           </div>
           <div className="pb-4">
@@ -27,6 +67,13 @@ export function MortgageCalculatorInput() {
             <input
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
+              value={mortgageInputs.downpayment}
+              onChange={(e) =>
+                setMortgageInputs({
+                  ...mortgageInputs,
+                  downpayment: e.target.value,
+                })
+              }
             />
           </div>
           <div className="pb-4">
@@ -34,6 +81,13 @@ export function MortgageCalculatorInput() {
             <input
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
+              value={mortgageInputs.loanterm}
+              onChange={(e) =>
+                setMortgageInputs({
+                  ...mortgageInputs,
+                  loanterm: e.target.value,
+                })
+              }
             />
           </div>
           <div className="pb-4">
@@ -41,6 +95,13 @@ export function MortgageCalculatorInput() {
             <input
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
+              value={mortgageInputs.interestrate}
+              onChange={(e) =>
+                setMortgageInputs({
+                  ...mortgageInputs,
+                  interestrate: e.target.value,
+                })
+              }
             />
           </div>
           <div className="pb-4">
@@ -48,6 +109,13 @@ export function MortgageCalculatorInput() {
             <input
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
+              value={mortgageInputs.zipcode}
+              onChange={(e) =>
+                setMortgageInputs({
+                  ...mortgageInputs,
+                  zipcode: e.target.value,
+                })
+              }
             />
           </div>
         </div>
@@ -60,7 +128,9 @@ export function MortgageCalculatorInput() {
           >
             Optional: Taxes, Insurance, HOA
             {/* Dropdown arrow */}
-            <span className="material-symbols-outlined px-2 hover:no-underline! focus:no-underline! no-underline!">expand_more</span>
+            <span className="material-symbols-outlined px-2 hover:no-underline! focus:no-underline! no-underline!">
+              expand_more
+            </span>
           </button>
           {optionalExpensesOpen && (
             <div className="pt-4">
@@ -71,6 +141,13 @@ export function MortgageCalculatorInput() {
                 <input
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
+                  value={mortgageInputs.propertytax}
+                  onChange={(e) =>
+                    setMortgageInputs({
+                      ...mortgageInputs,
+                      propertytax: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="pb-4">
@@ -80,6 +157,13 @@ export function MortgageCalculatorInput() {
                 <input
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
+                  value={mortgageInputs.homeownerinsurance}
+                  onChange={(e) =>
+                    setMortgageInputs({
+                      ...mortgageInputs,
+                      homeownerinsurance: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="pb-4">
@@ -89,6 +173,13 @@ export function MortgageCalculatorInput() {
                 <input
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
+                  value={mortgageInputs.pmipermonth}
+                  onChange={(e) =>
+                    setMortgageInputs({
+                      ...mortgageInputs,
+                      pmipermonth: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="pb-4">
@@ -98,6 +189,13 @@ export function MortgageCalculatorInput() {
                 <input
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
+                  value={mortgageInputs.hoafee}
+                  onChange={(e) =>
+                    setMortgageInputs({
+                      ...mortgageInputs,
+                      hoafee: e.target.value,
+                    })
+                  }
                 />
               </div>
             </div>
