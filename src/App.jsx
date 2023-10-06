@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MortgageCalculatorInput } from "../components/MortgageCalculatorInput"
 import "./App.css";
 
 function App() {
@@ -6,11 +7,9 @@ function App() {
 
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+      <div className="flex flex-col justify-center items-center p-4 mx-auto">
+        <h1 className="w-full text-3xl text-left pt-6 pb-2 px-2">Mortgage Calculator</h1>
+        <MortgageCalculatorInput/>
       </div>
     </>
   );
