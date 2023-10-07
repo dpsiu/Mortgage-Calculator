@@ -15,23 +15,22 @@ export function MortgageCalculatorInput() {
     homeownerinsurance: "",
     pmipermonth: "",
     hoafee: "",
+    monthlyPayment: "",
   };
+
+  const calculateMortgage = () => {};
 
   const [mortgageInputs, setMortgageInputs] = useState(initialInputState);
 
   const toggleOptionalExpenses = () => {
     setOptionalExpensesOpen(!optionalExpensesOpen);
-    setCount(count + 1);
-    console.log(count);
   };
 
-  // useEffect(() => {
-  //   console.log(mortgageInputs.homeprice);
-  // }, [mortgageInputs.homeprice]);
-
   useEffect(() => {
-    console.log(mortgageInputs.homeprice);
-    console.log("hi");
+    setMortgageInputs({
+      ...mortgageInputs,
+      monthlyPayment: mortgageInputs.homeprice * 2,
+    });
   }, [
     mortgageInputs.homeprice,
     mortgageInputs.downpayment,
@@ -42,7 +41,21 @@ export function MortgageCalculatorInput() {
     mortgageInputs.homeownerinsurance,
     mortgageInputs.pmipermonth,
     mortgageInputs.hoafee,
+    mortgageInputs.monthlyPayment,
   ]);
+
+  const validInputKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+  const handleValidInput = (e) => {
+    console.log(e.key);
+    e.key ===
+      [
+        ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(e.key)
+          ? true
+          : e.preventDefault(),
+        false,
+      ];
+  };
 
   return (
     <>
@@ -52,8 +65,9 @@ export function MortgageCalculatorInput() {
             <p className="pb-2 w-full text-sm font-bold ">Home Price</p>
             <input
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
-              type="number"
+              type="text"
               value={mortgageInputs.homeprice}
+              onKeyPress={(e) => handleValidInput(e)}
               onChange={(e) =>
                 setMortgageInputs({
                   ...mortgageInputs,
@@ -68,6 +82,7 @@ export function MortgageCalculatorInput() {
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
               value={mortgageInputs.downpayment}
+              onKeyPress={(e) => handleValidInput(e)}
               onChange={(e) =>
                 setMortgageInputs({
                   ...mortgageInputs,
@@ -82,6 +97,7 @@ export function MortgageCalculatorInput() {
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
               value={mortgageInputs.loanterm}
+              onKeyPress={(e) => handleValidInput(e)}
               onChange={(e) =>
                 setMortgageInputs({
                   ...mortgageInputs,
@@ -96,6 +112,7 @@ export function MortgageCalculatorInput() {
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
               value={mortgageInputs.interestrate}
+              onKeyPress={(e) => handleValidInput(e)}
               onChange={(e) =>
                 setMortgageInputs({
                   ...mortgageInputs,
@@ -110,6 +127,7 @@ export function MortgageCalculatorInput() {
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
               value={mortgageInputs.zipcode}
+              onKeyPress={(e) => handleValidInput(e)}
               onChange={(e) =>
                 setMortgageInputs({
                   ...mortgageInputs,
@@ -142,6 +160,7 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.propertytax}
+                  onKeyPress={(e) => handleValidInput(e)}
                   onChange={(e) =>
                     setMortgageInputs({
                       ...mortgageInputs,
@@ -158,6 +177,7 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.homeownerinsurance}
+                  onKeyPress={(e) => handleValidInput(e)}
                   onChange={(e) =>
                     setMortgageInputs({
                       ...mortgageInputs,
@@ -174,6 +194,7 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.pmipermonth}
+                  onKeyPress={(e) => handleValidInput(e)}
                   onChange={(e) =>
                     setMortgageInputs({
                       ...mortgageInputs,
@@ -190,6 +211,7 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.hoafee}
+                  onKeyPress={(e) => handleValidInput(e)}
                   onChange={(e) =>
                     setMortgageInputs({
                       ...mortgageInputs,
@@ -200,6 +222,9 @@ export function MortgageCalculatorInput() {
               </div>
             </div>
           )}
+        </div>
+        <div>
+          <h3>Total:{mortgageInputs.monthlyPayment}</h3>
         </div>
       </div>
     </>
