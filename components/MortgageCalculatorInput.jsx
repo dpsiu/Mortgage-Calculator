@@ -44,8 +44,6 @@ export function MortgageCalculatorInput() {
     mortgageInputs.monthlyPayment,
   ]);
 
-  const validInputKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
   const handleValidInput = (e) => {
     console.log(e.key);
     e.key ===
