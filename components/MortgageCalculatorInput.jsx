@@ -10,7 +10,7 @@ export function MortgageCalculatorInput() {
     downpayment: "",
     loanterm: "",
     interestrate: "",
-    zipcode: "",
+    zipcode: "78701",
     propertytax: "",
     homeownerinsurance: "",
     pmipermonth: "",
@@ -26,10 +26,30 @@ export function MortgageCalculatorInput() {
     setOptionalExpensesOpen(!optionalExpensesOpen);
   };
 
+  // P = Monthly mortgage payment
+  // L = Mortgage loan amount
+  // C = Your mortgage interest rate
+  // N = Number of monthly payments over
+
+  const L = mortgageInputs.homeprice - mortgageInputs.downpayment;
+  const C = mortgageInputs.interestrate / 12 / 100;
+  const N = mortgageInputs.loanterm * 12;
+  const P = (L * (C * (1 + C) ** N)) / ((1 + C) ** N - 1);
+
   useEffect(() => {
+    // console.log(mortgageInputs.homeprice);
+    // console.log(mortgageInputs.downpayment);
+    // console.log(mortgageInputs.loanterm);
+    // console.log(mortgageInputs.interestrate);
+
     setMortgageInputs({
       ...mortgageInputs,
-      monthlyPayment: mortgageInputs.homeprice * 2,
+      monthlyPayment: P,
+      // (mortgageInputs.homeprice - mortgageInputs.downpayment) *
+      // ((mortgageInputs.interestrate *
+      //   (1 + mortgageInputs.interestrate) ** (mortgageInputs.loanterm * 12)) /
+      //   (1 + mortgageInputs.interestrate) ** (mortgageInputs.loanterm * 12) -
+      //   1),
     });
   }, [
     mortgageInputs.homeprice,
@@ -66,6 +86,7 @@ export function MortgageCalculatorInput() {
               type="text"
               value={mortgageInputs.homeprice}
               onKeyPress={(e) => handleValidInput(e)}
+              // Need to account for minimum $10,000 price. Need extra function? Or modification to current is possible?
               onChange={(e) =>
                 setMortgageInputs({
                   ...mortgageInputs,
