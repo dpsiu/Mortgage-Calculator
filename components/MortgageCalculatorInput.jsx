@@ -9,7 +9,7 @@ export function MortgageCalculatorInput() {
     homeprice: "425,000",
     downpayment: "85,000",
     loanterm: "30",
-    interestrate: "8",
+    interestrate: "7.98",
     zipcode: "78701",
     propertytax: "",
     homeownerinsurance: "",
@@ -55,17 +55,23 @@ export function MortgageCalculatorInput() {
     mortgageInputs.monthlyPayment,
   ]);
 
-  const handleInputChange = (e) => {
-    // Designates 0-9 as only valid characters
-    e.key ==
-      [
-        ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(e.key)
-          ? true
-          : e.preventDefault(),
-        false,
-      ];
+  // Handles input case, permitting only nums.
+  // Might use switch case to handle diff input fields,
+  // ie, interest rate which allows a single decimal
+  const handleValidKey = (e) => {
+    const keyAscii = e.key.charCodeAt(0) || e.which;
+    console.log(keyAscii)
+    console.log(e.key)
+    const isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8;
+
+    if (!isValid) {
+      e.preventDefault();
+    }
   };
 
+  // .replace() removes commas before calculation for P.
+  // Consider refactor. Rather than change state with comma and remove b4 calc,
+  // consider keeping state as num, and commas only for input display
   const formatNumberWithCommas = (value) => {
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
@@ -84,7 +90,9 @@ export function MortgageCalculatorInput() {
                 className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                 type="text"
                 value={mortgageInputs.homeprice}
-                onKeyPress={(e) => handleInputChange(e)}
+                onKeyDown={(e) => {
+                  handleValidKey(e);
+                }}
                 onChange={(e) => {
                   const value = e.target.value.replace(/,/g, ""); // Remove existing commas
                   setMortgageInputs({
@@ -105,7 +113,9 @@ export function MortgageCalculatorInput() {
                 className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                 type="text"
                 value={mortgageInputs.downpayment}
-                onKeyPress={(e) => handleInputChange(e)}
+                onKeyDown={(e) => {
+                  handleValidKey(e);
+                }}
                 onChange={(e) => {
                   const value = e.target.value.replace(/,/g, ""); // Remove existing commas
                   setMortgageInputs({
@@ -122,13 +132,15 @@ export function MortgageCalculatorInput() {
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
               value={mortgageInputs.loanterm}
-              onKeyPress={(e) => handleInputChange(e)}
-              onChange={(e) =>
+              onKeyDown={(e) => {
+                handleValidKey(e);
+              }}
+              onChange={(e) => {
                 setMortgageInputs({
                   ...mortgageInputs,
                   loanterm: e.target.value,
-                })
-              }
+                });
+              }}
             />
           </div>
           <div className="pb-4 relative flex flex-col">
@@ -140,14 +152,18 @@ export function MortgageCalculatorInput() {
               <input
                 className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                 type="text"
+                id="interestrate"
                 value={mortgageInputs.interestrate}
-                onKeyPress={(e) => handleInputChange(e)}
-                onChange={(e) =>
+                onKeyDown={(e) => {
+                  handleValidKey(e);
+                }}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/./g, "")
                   setMortgageInputs({
                     ...mortgageInputs,
                     interestrate: e.target.value,
-                  })
-                }
+                  });
+                }}
               />
             </div>
           </div>
@@ -157,13 +173,15 @@ export function MortgageCalculatorInput() {
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
               value={mortgageInputs.zipcode}
-              onKeyPress={(e) => handleInputChange(e)}
-              onChange={(e) =>
+              onKeyDown={(e) => {
+                handleValidKey(e);
+              }}
+              onChange={(e) => {
                 setMortgageInputs({
                   ...mortgageInputs,
                   zipcode: e.target.value,
-                })
-              }
+                });
+              }}
             />
           </div>
         </div>
@@ -190,13 +208,15 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.propertytax}
-                  onKeyPress={(e) => handleInputChange(e)}
-                  onChange={(e) =>
+                  onKeyDown={(e) => {
+                    handleValidKey(e);
+                  }}
+                  onChange={(e) => {
                     setMortgageInputs({
                       ...mortgageInputs,
                       propertytax: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                 />
               </div>
               <div className="pb-4">
@@ -207,13 +227,15 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.homeownerinsurance}
-                  onKeyPress={(e) => handleInputChange(e)}
-                  onChange={(e) =>
+                  onKeyDown={(e) => {
+                    handleValidKey(e);
+                  }}
+                  onChange={(e) => {
                     setMortgageInputs({
                       ...mortgageInputs,
                       homeownerinsurance: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                 />
               </div>
               <div className="pb-4">
@@ -224,13 +246,15 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.pmipermonth}
-                  onKeyPress={(e) => handleInputChange(e)}
-                  onChange={(e) =>
+                  onKeyDown={(e) => {
+                    handleValidKey(e);
+                  }}
+                  onChange={(e) => {
                     setMortgageInputs({
                       ...mortgageInputs,
                       pmipermonth: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                 />
               </div>
               <div className="pb-4">
@@ -241,13 +265,15 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.hoafee}
-                  onKeyPress={(e) => handleInputChange(e)}
-                  onChange={(e) =>
+                  onKeyDown={(e) => {
+                    handleValidKey(e);
+                  }}
+                  onChange={(e) => {
                     setMortgageInputs({
                       ...mortgageInputs,
                       hoafee: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                 />
               </div>
             </div>
@@ -255,7 +281,7 @@ export function MortgageCalculatorInput() {
         </div>
         <div className="relative flex items-center text-lg font-bold">
           <h3>
-            Total monthly payment = <span>$</span>
+            Total monthly payment = <span>$ </span>
             {mortgageInputs.monthlyPayment}
           </h3>
         </div>
