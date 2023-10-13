@@ -58,11 +58,18 @@ export function MortgageCalculatorInput() {
   // Handles input case, permitting only nums.
   // Might use switch case to handle diff input fields,
   // ie, interest rate which allows a single decimal
-  const handleValidKey = (e) => {
+  const handleValidKey = (e, field) => {
     const keyAscii = e.key.charCodeAt(0) || e.which;
-    console.log(keyAscii)
-    console.log(e.key)
-    const isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8;
+    let isValid  = false;
+
+    if (field === "interestrate") {
+      isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8 || keyAscii === 46;
+      if (e.target.value.includes('.')) {
+        isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8;
+      }
+    } else {
+      isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8;
+    }
 
     if (!isValid) {
       e.preventDefault();
@@ -155,7 +162,7 @@ export function MortgageCalculatorInput() {
                 id="interestrate"
                 value={mortgageInputs.interestrate}
                 onKeyDown={(e) => {
-                  handleValidKey(e);
+                  handleValidKey(e, "interestrate", e.target.value);
                 }}
                 onChange={(e) => {
                   const value = e.target.value.replace(/./g, "")
