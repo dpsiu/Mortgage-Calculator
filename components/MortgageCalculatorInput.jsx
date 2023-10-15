@@ -59,16 +59,31 @@ export function MortgageCalculatorInput() {
   // Might use switch case to handle diff input fields,
   // ie, interest rate which allows a single decimal
   const handleValidKey = (e, field) => {
-    const keyAscii = e.key.charCodeAt(0) || e.which;
+    const key = e.key
     let isValid  = false;
+    const value = e.target.value
+    const interestRegex = /^[0-9]{1,5}(?:\.[0-9]{0,3})?$/;
 
     if (field === "interestrate") {
-      isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8 || keyAscii === 46;
-      if (e.target.value.includes('.')) {
-        isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8;
+      isValid = (key >= '0' && key <= '9') || key === 'Backspace' || key === '.';
+      if (value.includes('.')) {
+        isValid = (key >= '0' && key <= '9') || key === 'Backspace';
       }
     } else {
-      isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8;
+      isValid = (key >= '0' && key <= '9') || key === 'Backspace'
+    }
+
+    if (interestRegex.test(value)) {
+      console.log('Good');
+    } else if (key === 'Backspace') {
+      isValid = true;
+      console.log('Good (Backspace)');
+    } else if (value === '') {
+      isValid = true;
+      console.log('Enter value')
+    } else {
+      isValid = false;
+      console.log('Bad');
     }
 
     if (!isValid) {
