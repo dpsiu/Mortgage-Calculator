@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 
 export function MortgageCalculatorInput() {
   const [optionalExpensesOpen, setOptionalExpensesOpen] = useState(false);
-  const [count, setCount] = useState(0);
+  const [isValid, setIsValid] = useState(true);
 
   const initialInputState = {
     homeprice: "425,000",
@@ -58,32 +58,34 @@ export function MortgageCalculatorInput() {
   // Handles input case, permitting only nums.
   // Might use switch case to handle diff input fields,
   // ie, interest rate which allows a single decimal
-  const handleValidKey = (e, field) => {
-    const key = e.key
-    let isValid  = false;
-    const value = e.target.value
+
+
+  const handleValidKey = (e, field, value) => {
+    const key = e.key;
     const interestRegex = /^[0-9]{1,5}(?:\.[0-9]{0,3})?$/;
 
     if (field === "interestrate") {
-      isValid = (key >= '0' && key <= '9') || key === 'Backspace' || key === '.';
-      if (value.includes('.')) {
-        isValid = (key >= '0' && key <= '9') || key === 'Backspace';
+      setIsValid(key >= "0" && key <= "9") || key === "Backspace" || key === ".";
+      if (value.includes(".")) {
+        setIsValid(key >= "0" && key <= "9") || key === "Backspace";
       }
     } else {
-      isValid = (key >= '0' && key <= '9') || key === 'Backspace'
+      setIsValid(key >= "0" && key <= "9") || key === "Backspace";
     }
 
-    if (interestRegex.test(value)) {
-      console.log('Good');
-    } else if (key === 'Backspace') {
-      isValid = true;
-      console.log('Good (Backspace)');
-    } else if (value === '') {
-      isValid = true;
-      console.log('Enter value')
+    const numberValue = parseFloat(value)
+
+    if (interestRegex.test(value) && numberValue < 100) {
+      setIsValid(true)
+      console.log("Good");
+    } else if (key === "Backspace") {
+      setIsValid(true)
+      console.log("Good (Backspace)");
+    } else if (value === "") {
+      setIsValid(true)
     } else {
-      isValid = false;
-      console.log('Bad');
+      setIsValid(false)
+      console.log("Bad");
     }
 
     if (!isValid) {
@@ -172,15 +174,18 @@ export function MortgageCalculatorInput() {
                 %
               </span>
               <input
-                className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
+                className={`py-2 px-2 border  rounded-md 
+                 focus:outline-none w-full appearance-none ${
+                   isValid ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700" : "border-red-500 bg-red-100/50"
+                 }`}
                 type="text"
                 id="interestrate"
                 value={mortgageInputs.interestrate}
-                onKeyDown={(e) => {
+                onKeyUp={(e) => {
                   handleValidKey(e, "interestrate", e.target.value);
                 }}
                 onChange={(e) => {
-                  const value = e.target.value.replace(/./g, "")
+                  const value = e.target.value.replace(/./g, "");
                   setMortgageInputs({
                     ...mortgageInputs,
                     interestrate: e.target.value,
@@ -209,7 +214,10 @@ export function MortgageCalculatorInput() {
         </div>
         <div>
           <button
-            onClick={toggleOptionalExpenses}
+            onClick={() => {
+              toggleOptionalExpenses(); 
+              handleValidInput();
+            }}
             type="button"
             className="inline-flex items-center w-full py-2 my-4 text-blue-700 font-bold focus:outline-none hover:underline"
             id="options-menu"
