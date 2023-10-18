@@ -3,7 +3,9 @@ import React, { useState, useEffect } from "react";
 
 export function MortgageCalculatorInput() {
   const [optionalExpensesOpen, setOptionalExpensesOpen] = useState(false);
-  const [isValid, setIsValid] = useState(true);
+
+  // const [isValid, setIsValid] = useState(true);
+  const [inputValue, setInputValue] = useState("")
 
   const initialInputState = {
     homeprice: "425,000",
@@ -60,38 +62,56 @@ export function MortgageCalculatorInput() {
   // ie, interest rate which allows a single decimal
 
 
-  const handleValidKey = (e, field, value) => {
-    const key = e.key;
-    const interestRegex = /^[0-9]{1,5}(?:\.[0-9]{0,3})?$/;
+  // const handleValidKey = (e, field, value) => {
+  //   const key = e.key;
+  //   const interestRegex = /^[0-9]{1,5}(?:\.[0-9]{0,3})?$/;
 
-    if (field === "interestrate") {
-      setIsValid((key >= "0" && key <= "9") || key === "Backspace" || key === ".");
-      if (value.includes(".")) {
-        setIsValid((key >= "0" && key <= "9") || key === "Backspace");
-      }
-    } else {
-      setIsValid((key >= "0" && key <= "9") || key === "Backspace");
-    }
+  //   if (field === "interestrate") {
+  //     console.log("interest!")
+  //     setIsValid(key >= "0" && key <= "9") || key === "Backspace" || key === ".";
+  //     if (value.includes(".")) {
+  //       console.log('interest, but no .')
+  //       setIsValid(key >= "0" && key <= "9") || key === "Backspace";
+  //     }
+  //   } else {
+  //     console.log('not interest')
+  //     setIsValid(key >= "0" && key <= "9") || key === "Backspace";
+  //   }
 
-    const numberValue = parseFloat(value)
+  //   const numberValue = parseFloat(value)
 
-    if (interestRegex.test(value) && numberValue < 100) {
-      setIsValid(true)
-      console.log("Good");
-    } else if (key === "Backspace") {
-      setIsValid(true)
-      console.log("Good (Backspace)");
-    } else if (value === "") {
-      setIsValid(true)
-    } else {
-      setIsValid(false)
-      console.log("Bad");
-    }
+  //   if (interestRegex.test(value) && numberValue < 100) {
+  //     setIsValid(true)
+  //     console.log("Good");
+  //   } else if (key === "Backspace") {
+  //     setIsValid(true)
+  //     console.log("Good (Backspace)");
+  //   } else if (value === "") {
+  //     setIsValid(true)
+  //   } else {
+  //     setIsValid(false)
+  //     console.log("Bad");
+  //   }
+
+  //   if (!isValid) {
+  //     e.preventDefault();
+  //   }
+  // };
+  
+  // Below is savestate 1, inputs only accept numbers
+  const handleValidKey = (e) => {
+    const keyAscii = e.key.charCodeAt(0) || e.which;
+    console.log(keyAscii)
+    console.log(e.key)
+    const isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8;
 
     if (!isValid) {
       e.preventDefault();
     }
-  };
+  }
+
+    // Next, make error state for home price. Must be > 10000
+
 
   // .replace() removes commas before calculation for P.
   // Consider refactor. Rather than change state with comma and remove b4 calc,
@@ -114,9 +134,7 @@ export function MortgageCalculatorInput() {
                 className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                 type="text"
                 value={mortgageInputs.homeprice}
-                onKeyDown={(e) => {
-                  handleValidKey(e);
-                }}
+                onKeyDown={(e) => {handleValidKey(e)}}
                 onChange={(e) => {
                   const value = e.target.value.replace(/,/g, ""); // Remove existing commas
                   setMortgageInputs({
@@ -174,15 +192,18 @@ export function MortgageCalculatorInput() {
                 %
               </span>
               <input
-                className={`py-2 px-2 border  rounded-md 
-                 focus:outline-none w-full appearance-none ${
-                   isValid ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700" : "border-red-500 bg-red-100/50"
-                 }`}
+                // className={`py-2 px-2 border  rounded-md 
+                //  focus:outline-none w-full appearance-none ${
+                //    isValid ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700" : "border-red-500 bg-red-100/50"
+                //  }`}
                 type="text"
                 id="interestrate"
                 value={mortgageInputs.interestrate}
-                onKeyUp={(e) => {
-                  handleValidKey(e, "interestrate", e.target.value);
+                // onKeyPress={(e) => {
+                //   handleValidKey(e, "interestrate", e.target.value);
+                // }}
+                onKeyDown={(e) => {
+                  handleValidKey(e);
                 }}
                 onChange={(e) => {
                   const value = e.target.value.replace(/./g, "");
