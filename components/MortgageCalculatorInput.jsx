@@ -59,32 +59,33 @@ export function MortgageCalculatorInput() {
   // Might use switch case to handle diff input fields,
   // ie, interest rate which allows a single decimal
 
-
   const handleValidKey = (e, field, value) => {
     const key = e.key;
     const interestRegex = /^[0-9]{1,5}(?:\.[0-9]{0,3})?$/;
 
     if (field === "interestrate") {
-      setIsValid(key >= "0" && key <= "9") || key === "Backspace" || key === ".";
+      setIsValid(
+        (key >= "0" && key <= "9") || key === "Backspace" || key === "."
+      );
       if (value.includes(".")) {
-        setIsValid(key >= "0" && key <= "9") || key === "Backspace";
+        setIsValid((key >= "0" && key <= "9") || key === "Backspace");
       }
     } else {
-      setIsValid(key >= "0" && key <= "9") || key === "Backspace";
+      setIsValid((key >= "0" && key <= "9") || key === "Backspace");
     }
 
-    const numberValue = parseFloat(value)
+    const numberValue = parseFloat(value);
 
     if (interestRegex.test(value) && numberValue < 100) {
-      setIsValid(true)
+      setIsValid(true);
       console.log("Good");
     } else if (key === "Backspace") {
-      setIsValid(true)
+      setIsValid(true);
       console.log("Good (Backspace)");
     } else if (value === "") {
-      setIsValid(true)
+      setIsValid(true);
     } else {
-      setIsValid(false)
+      setIsValid(false);
       console.log("Bad");
     }
 
@@ -114,7 +115,7 @@ export function MortgageCalculatorInput() {
                 className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                 type="text"
                 value={mortgageInputs.homeprice}
-                onKeyDown={(e) => {
+                onKeyUp={(e) => {
                   handleValidKey(e);
                 }}
                 onChange={(e) => {
@@ -137,7 +138,7 @@ export function MortgageCalculatorInput() {
                 className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                 type="text"
                 value={mortgageInputs.downpayment}
-                onKeyDown={(e) => {
+                onKeyUp={(e) => {
                   handleValidKey(e);
                 }}
                 onChange={(e) => {
@@ -156,7 +157,7 @@ export function MortgageCalculatorInput() {
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
               value={mortgageInputs.loanterm}
-              onKeyDown={(e) => {
+              onKeyUp={(e) => {
                 handleValidKey(e);
               }}
               onChange={(e) => {
@@ -176,7 +177,9 @@ export function MortgageCalculatorInput() {
               <input
                 className={`py-2 px-2 border  rounded-md 
                  focus:outline-none w-full appearance-none ${
-                   isValid ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700" : "border-red-500 bg-red-100/50"
+                   isValid
+                     ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700"
+                     : "border-red-500 bg-red-100/50"
                  }`}
                 type="text"
                 id="interestrate"
@@ -200,7 +203,7 @@ export function MortgageCalculatorInput() {
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
               value={mortgageInputs.zipcode}
-              onKeyDown={(e) => {
+              onKeyUp={(e) => {
                 handleValidKey(e);
               }}
               onChange={(e) => {
@@ -215,8 +218,7 @@ export function MortgageCalculatorInput() {
         <div>
           <button
             onClick={() => {
-              toggleOptionalExpenses(); 
-              handleValidInput();
+              toggleOptionalExpenses();
             }}
             type="button"
             className="inline-flex items-center w-full py-2 my-4 text-blue-700 font-bold focus:outline-none hover:underline"
@@ -238,7 +240,7 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.propertytax}
-                  onKeyDown={(e) => {
+                  onKeyUp={(e) => {
                     handleValidKey(e);
                   }}
                   onChange={(e) => {
@@ -257,7 +259,7 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.homeownerinsurance}
-                  onKeyDown={(e) => {
+                  onKeyUp={(e) => {
                     handleValidKey(e);
                   }}
                   onChange={(e) => {
@@ -276,7 +278,7 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.pmipermonth}
-                  onKeyDown={(e) => {
+                  onKeyUp={(e) => {
                     handleValidKey(e);
                   }}
                   onChange={(e) => {
@@ -295,7 +297,7 @@ export function MortgageCalculatorInput() {
                   className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                   type="number"
                   value={mortgageInputs.hoafee}
-                  onKeyDown={(e) => {
+                  onKeyUp={(e) => {
                     handleValidKey(e);
                   }}
                   onChange={(e) => {
