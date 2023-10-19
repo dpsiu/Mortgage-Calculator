@@ -8,7 +8,7 @@ export function MortgageCalculatorInput() {
   const [inputValue, setInputValue] = useState("")
 
   const initialInputState = {
-    homeprice: "425,000",
+    homeprice: 425000,
     downpayment: "85,000",
     loanterm: "30",
     interestrate: "7.98",
@@ -31,7 +31,7 @@ export function MortgageCalculatorInput() {
   // C = Your mortgage interest rate
   // N = Number of monthly payments over
   const L =
-    mortgageInputs.homeprice.replace(/,/g, "") -
+    mortgageInputs.homepri -
     mortgageInputs.downpayment.replace(/,/g, "");
   const C = mortgageInputs.interestrate / 12 / 100;
   const N = mortgageInputs.loanterm * 12;
@@ -101,8 +101,6 @@ export function MortgageCalculatorInput() {
   // Below is savestate 1, inputs only accept numbers
   const handleValidKey = (e) => {
     const keyAscii = e.key.charCodeAt(0) || e.which;
-    console.log(keyAscii)
-    console.log(e.key)
     const isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8;
 
     if (!isValid) {
@@ -111,13 +109,19 @@ export function MortgageCalculatorInput() {
   }
 
     // Next, make error state for home price. Must be > 10000
+  const handleValidHomeprice = (e) => {
+    const homeprice = mortgageInputs.homeprice
+    console.log('Homeprice:' +  homeprice)
 
+    parseFloat(homeprice) > 10000 ? console.log('true') : console.log('false')
+  }
 
   // .replace() removes commas before calculation for P.
   // Consider refactor. Rather than change state with comma and remove b4 calc,
   // consider keeping state as num, and commas only for input display
   const formatNumberWithCommas = (value) => {
-    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const stringValue = value.toLocaleString()
+    return stringValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   return (
@@ -133,13 +137,16 @@ export function MortgageCalculatorInput() {
               <input
                 className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                 type="text"
-                value={mortgageInputs.homeprice}
-                onKeyDown={(e) => {handleValidKey(e)}}
+                value={formatNumberWithCommas(mortgageInputs.homeprice)}
+                onKeyUp={(e) => {handleValidKey(e);
+                  handleValidHomeprice();
+                }}
                 onChange={(e) => {
-                  const value = e.target.value.replace(/,/g, ""); // Remove existing commas
+                  const value = e.target.value;
+                  const numericValue = parseFloat(value.replace(/,/g, ""))
                   setMortgageInputs({
                     ...mortgageInputs,
-                    homeprice: formatNumberWithCommas(value),
+                    homeprice: numericValue,
                   });
                 }}
               />
