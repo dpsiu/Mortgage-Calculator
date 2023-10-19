@@ -9,7 +9,7 @@ export function MortgageCalculatorInput() {
 
   const initialInputState = {
     homeprice: 425000,
-    downpayment: "85,000",
+    downpayment: 85000,
     loanterm: "30",
     interestrate: "7.98",
     zipcode: "78701",
@@ -32,7 +32,7 @@ export function MortgageCalculatorInput() {
   // N = Number of monthly payments over
   const L =
     mortgageInputs.homepri -
-    mortgageInputs.downpayment.replace(/,/g, "");
+    mortgageInputs.downpayment;
   const C = mortgageInputs.interestrate / 12 / 100;
   const N = mortgageInputs.loanterm * 12;
   const P = ((L * (C * (1 + C) ** N)) / ((1 + C) ** N - 1))
@@ -113,7 +113,14 @@ export function MortgageCalculatorInput() {
     const homeprice = mortgageInputs.homeprice
     console.log('Homeprice:' +  homeprice)
 
-    parseFloat(homeprice) > 10000 ? console.log('true') : console.log('false')
+    homeprice > 10000 ? console.log('true') : console.log('false')
+  }
+
+  const handleValidDownPayment = (e) => {
+    const homeprice = mortgageInputs.homeprice
+    const downpayment = mortgageInputs.downpayment
+
+    homeprice > downpayment ? console.log('All good') : console.log('down p cant b bigger than house price')
   }
 
   // .replace() removes commas before calculation for P.
@@ -161,15 +168,17 @@ export function MortgageCalculatorInput() {
               <input
                 className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                 type="text"
-                value={mortgageInputs.downpayment}
-                onKeyDown={(e) => {
+                value={formatNumberWithCommas(mortgageInputs.downpayment)}
+                onKeyUp={(e) => {
                   handleValidKey(e);
+                  handleValidDownPayment()
                 }}
                 onChange={(e) => {
-                  const value = e.target.value.replace(/,/g, ""); // Remove existing commas
+                  const value = e.target.value.replace(/,/g, "");
+                  const numericValue = parseFloat(value)
                   setMortgageInputs({
                     ...mortgageInputs,
-                    downpayment: formatNumberWithCommas(value),
+                    downpayment: numericValue,
                   });
                 }}
               />
@@ -244,7 +253,6 @@ export function MortgageCalculatorInput() {
           <button
             onClick={() => {
               toggleOptionalExpenses(); 
-              handleValidInput();
             }}
             type="button"
             className="inline-flex items-center w-full py-2 my-4 text-blue-700 font-bold focus:outline-none hover:underline"
