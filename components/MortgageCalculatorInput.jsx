@@ -80,19 +80,24 @@ export function MortgageCalculatorInput() {
   const handleValidHomeprice = (e) => {
     const homeprice = mortgageInputs.homeprice;
     const downpayment = mortgageInputs.downpayment;
-    return homeprice > 10000 && homeprice >= downpayment
+    return homeprice > 10000 && homeprice >= downpayment;
   };
 
   const handleValidDownPayment = (e) => {
     const homeprice = mortgageInputs.homeprice;
     const downpayment = mortgageInputs.downpayment;
 
-    return downpayment < homeprice
+    return downpayment < homeprice;
   };
 
   const handleValidInterestRate = (e) => {
     const interest = mortgageInputs.interestrate;
     return interest < 100;
+  };
+
+  const handleValidLoanTerm = (e) => {
+    const loanTerm = mortgageInputs.loanterm;
+    return loanTerm <= 30;
   };
 
   // .replace() removes commas before calculation for P.
@@ -137,6 +142,11 @@ export function MortgageCalculatorInput() {
                 }}
               />
             </div>
+            {!handleValidHomeprice() && (
+              <p className="text-sm px-3 pt-2 text-red-500">
+                Home price must be greater than $10,000 and Down Payment
+              </p>
+            )}
           </div>
           <div className="pb-4 relative flex flex-col">
             <p className="pb-2 w-full text-sm font-semibold ">Down Payment</p>
@@ -149,7 +159,8 @@ export function MortgageCalculatorInput() {
                   handleValidDownPayment()
                     ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700"
                     : "border-red-500 bg-red-100/50"
-                }`}                type="text"
+                }`}
+                type="text"
                 value={formatNumberWithCommas(mortgageInputs.downpayment)}
                 onKeyUp={(e) => {
                   handleValidKey(e);
@@ -160,22 +171,38 @@ export function MortgageCalculatorInput() {
                 }}
               />
             </div>
+            {!handleValidDownPayment() && (
+              <p className="text-sm px-3 pt-2 text-red-500">
+                Down payment should be less than home price
+              </p>
+            )}
           </div>
           <div className="pb-4">
             <p className="pb-2 w-full text-sm font-semibold ">Loan Term</p>
             <input
-              className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
+              className={`py-2 px-2 border  rounded-md
+                focus:outline-none w-full appearance-none ${
+                  handleValidLoanTerm()
+                    ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700"
+                    : "border-red-500 bg-red-100/50"
+                }`}
               type="number"
-              value={formatNumberWithCommas(mortgageInputs.loanterm)}
+              value={mortgageInputs.loanterm}
               onKeyUp={(e) => {
                 handleValidKey(e);
-                handleValidDownPayment();
+                handleValidLoanTerm();
               }}
               onChange={(e) => {
                 handleValidInput(e, "loanterm");
               }}
             />
+            {!handleValidLoanTerm() && (
+              <p className="text-sm px-3 pt-2 text-red-500">
+                Loan term should be less than 30 years
+              </p>
+            )}
           </div>
+
           <div className="pb-4 relative flex flex-col">
             <p className="pb-2 w-full text-sm font-bold">Interest Rate</p>
             <div className="relative flex items-center">
@@ -200,6 +227,11 @@ export function MortgageCalculatorInput() {
                 // How might we solve?
               />
             </div>
+            {!handleValidInterestRate() && (
+              <p className="text-sm px-3 pt-2 text-red-500">
+                Intererest rate should be less than 100%
+              </p>
+            )}
           </div>
           <div className="pb-4">
             <p className="pb-2 w-full text-sm font-semibold ">ZIP Code</p>
