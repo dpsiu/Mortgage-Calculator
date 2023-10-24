@@ -4,9 +4,6 @@ import React, { useState, useEffect } from "react";
 export function MortgageCalculatorInput() {
   const [optionalExpensesOpen, setOptionalExpensesOpen] = useState(false);
 
-  // const [isValid, setIsValid] = useState(true);
-  const [inputValue, setInputValue] = useState("");
-
   const initialInputState = {
     homeprice: 425000,
     downpayment: 85000,
@@ -22,24 +19,21 @@ export function MortgageCalculatorInput() {
 
   const [mortgageInputs, setMortgageInputs] = useState(initialInputState);
 
-  const toggleOptionalExpenses = () => {
-    setOptionalExpensesOpen(!optionalExpensesOpen);
-  };
-
-  // P = Monthly mortgage payment
   // L = Mortgage loan amount
   // C = Your mortgage interest rate
   // N = Number of monthly payments over
+  // P = Monthly mortgage payment
+
   const L = mortgageInputs.homeprice - mortgageInputs.downpayment;
   const C = mortgageInputs.interestrate / 12 / 100;
   const N = mortgageInputs.loanterm * 12;
-  const PropTax = mortgageInputs.propertytax
-  const HOAI = mortgageInputs.homeownerinsurance
-  const PMI = mortgageInputs.pmipermonth
-  const HOAFee = mortgageInputs.hoafee
-  const OptionalExpenses = PropTax + HOAI + PMI + HOAFee
-  
-  const P = (((L * (C * (1 + C) ** N)) / ((1 + C) ** N - 1)) + OptionalExpenses)
+  const PropTax = mortgageInputs.propertytax;
+  const HOAI = mortgageInputs.homeownerinsurance;
+  const PMI = mortgageInputs.pmipermonth;
+  const HOAFee = mortgageInputs.hoafee;
+  const OptionalExpenses = PropTax + HOAI + PMI + HOAFee;
+
+  const P = ((L * (C * (1 + C) ** N)) / ((1 + C) ** N - 1) + OptionalExpenses)
     .toFixed(2)
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -64,37 +58,12 @@ export function MortgageCalculatorInput() {
   const handleValidKey = (e, field) => {
     const keyAscii = e.key.charCodeAt(0) || e.which;
     const value = e.target.value;
-    console.log("Ascii for " + e.key + " is " + keyAscii);
-    let isValid;
-
-    if (field === "interestrate") {
-      isValid =
-        (keyAscii >= 46 && keyAscii <= 57) || keyAscii === 8 || keyAscii === 66;
-    } else {
-      isValid =
-        (keyAscii >= 46 && keyAscii <= 57) || keyAscii === 8 || keyAscii === 66;
-    }
+    let isValid =
+      (keyAscii >= 46 && keyAscii <= 57) || keyAscii === 8 || keyAscii === 66;
 
     if (!isValid) {
       e.preventDefault();
     }
-  };
-
-  // Next, make error state for home price. Must be > 10000
-  const handleValidHomeprice = (e) => {
-    const homeprice = mortgageInputs.homeprice;
-    console.log("Homeprice:" + homeprice);
-
-    homeprice > 10000 ? console.log("true") : console.log("false");
-  };
-
-  const handleValidDownPayment = (e) => {
-    const homeprice = mortgageInputs.homeprice;
-    const downpayment = mortgageInputs.downpayment;
-
-    homeprice > downpayment
-      ? console.log("All good")
-      : console.log("down p cant b bigger than house price");
   };
 
   const handleValidInput = (e, field) => {
@@ -107,12 +76,38 @@ export function MortgageCalculatorInput() {
     });
   };
 
+  // Next, make error state for home price. Must be > 10000
+  const handleValidHomeprice = (e) => {
+    const homeprice = mortgageInputs.homeprice;
+    const downpayment = mortgageInputs.downpayment;
+    return homeprice > 10000 && homeprice >= downpayment
+  };
+
+  const handleValidDownPayment = (e) => {
+    const homeprice = mortgageInputs.homeprice;
+    const downpayment = mortgageInputs.downpayment;
+
+    return downpayment < homeprice
+  };
+
+  const handleValidInterestRate = (e) => {
+    const interest = mortgageInputs.interestrate;
+    return interest < 100;
+  };
+
   // .replace() removes commas before calculation for P.
   // Consider refactor. Rather than change state with comma and remove b4 calc,
   // consider keeping state as num, and commas only for input display
+
+  // formatNumWCommas is primarily for display. Consider refactor to
+  //  keep actual state as numbers
   const formatNumberWithCommas = (value) => {
     const stringValue = value.toLocaleString();
     return stringValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  const toggleOptionalExpenses = () => {
+    setOptionalExpensesOpen(!optionalExpensesOpen);
   };
 
   return (
@@ -126,7 +121,11 @@ export function MortgageCalculatorInput() {
                 $
               </span>
               <input
-                className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
+                className={`py-2 px-5 border rounded-md focus:outline-none w-full appearance-none ${
+                  handleValidHomeprice()
+                    ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700"
+                    : "border-red-500 bg-red-100/50"
+                }`}
                 type="text"
                 value={formatNumberWithCommas(mortgageInputs.homeprice)}
                 onKeyUp={(e) => {
@@ -146,8 +145,11 @@ export function MortgageCalculatorInput() {
                 $
               </span>
               <input
-                className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
-                type="text"
+                className={`py-2 px-5 border rounded-md focus:outline-none w-full appearance-none ${
+                  handleValidDownPayment()
+                    ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700"
+                    : "border-red-500 bg-red-100/50"
+                }`}                type="text"
                 value={formatNumberWithCommas(mortgageInputs.downpayment)}
                 onKeyUp={(e) => {
                   handleValidKey(e);
@@ -181,13 +183,16 @@ export function MortgageCalculatorInput() {
                 %
               </span>
               <input
-                // className={`py-2 px-2 border  rounded-md
-                //  focus:outline-none w-full appearance-none ${
-                //    handleValidHomeprice ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700" : "border-red-500 bg-red-100/50"
-                //  }`}
+                className={`py-2 px-2 border  rounded-md
+                 focus:outline-none w-full appearance-none ${
+                   handleValidInterestRate()
+                     ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700"
+                     : "border-red-500 bg-red-100/50"
+                 }`}
                 type="number"
                 value={mortgageInputs.interestrate}
                 onChange={(e) => {
+                  handleValidInterestRate();
                   handleValidInput(e, "interestrate");
                 }}
                 // For l8r consideration, interest rate as type num allows 0
