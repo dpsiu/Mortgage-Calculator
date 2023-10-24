@@ -33,7 +33,13 @@ export function MortgageCalculatorInput() {
   const L = mortgageInputs.homeprice - mortgageInputs.downpayment;
   const C = mortgageInputs.interestrate / 12 / 100;
   const N = mortgageInputs.loanterm * 12;
-  const P = ((L * (C * (1 + C) ** N)) / ((1 + C) ** N - 1))
+  const PropTax = mortgageInputs.propertytax
+  const HOAI = mortgageInputs.homeownerinsurance
+  const PMI = mortgageInputs.pmipermonth
+  const HOAFee = mortgageInputs.hoafee
+  const OptionalExpenses = PropTax + HOAI + PMI + HOAFee
+  
+  const P = (((L * (C * (1 + C) ** N)) / ((1 + C) ** N - 1)) + OptionalExpenses)
     .toFixed(2)
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -222,71 +228,89 @@ export function MortgageCalculatorInput() {
           </button>
           {optionalExpensesOpen && (
             <div className="pt-4">
-              <div className="pb-4">
-                <p className="pb-2 w-full text-sm font-semibold ">
+              <div className="pb-4 relative flex flex-col">
+                <p className="pb-2 w-full text-sm font-bold">
                   Property tax per month
                 </p>
-                <input
-                  className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
-                  type="text"
-                  value={formatNumberWithCommas(mortgageInputs.propertytax)}
-                  onKeyUp={(e) => {
-                    handleValidKey(e);
-                  }}
-                  onChange={(e) => {
-                    handleValidInput(e, "propertytax");
-                  }}
-                />
+                <div className="relative flex items-center">
+                  <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
+                    $
+                  </span>
+                  <input
+                    className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
+                    type="text"
+                    value={formatNumberWithCommas(mortgageInputs.propertytax)}
+                    onKeyUp={(e) => {
+                      handleValidKey(e);
+                    }}
+                    onChange={(e) => {
+                      handleValidInput(e, "propertytax");
+                    }}
+                  />
+                </div>
               </div>
-              <div className="pb-4">
-                <p className="pb-2 w-full text-sm font-semibold ">
+              <div className="pb-4 relative flex flex-col">
+                <p className="pb-2 w-full text-sm font-bold">
                   Homeowner's insurance per month
                 </p>
-                <input
-                  className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
-                  type="text"
-                  value={formatNumberWithCommas(
-                    mortgageInputs.homeownerinsurance
-                  )}
-                  onKeyUp={(e) => {
-                    handleValidKey(e);
-                  }}
-                  onChange={(e) => {
-                    handleValidInput(e, "homeownerinsurance");
-                  }}
-                />
+                <div className="relative flex items-center">
+                  <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
+                    $
+                  </span>
+                  <input
+                    className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
+                    type="text"
+                    value={formatNumberWithCommas(
+                      mortgageInputs.homeownerinsurance
+                    )}
+                    onKeyUp={(e) => {
+                      handleValidKey(e);
+                    }}
+                    onChange={(e) => {
+                      handleValidInput(e, "homeownerinsurance");
+                    }}
+                  />
+                </div>
               </div>
-              <div className="pb-4">
-                <p className="pb-2 w-full text-sm font-semibold ">
-                  PMI per month
-                </p>
-                <input
-                  className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
-                  type="text"
-                  value={formatNumberWithCommas(mortgageInputs.pmipermonth)}
-                  onKeyUp={(e) => {
-                    handleValidKey(e);
-                  }}
-                  onChange={(e) => {
-                    handleValidInput(e, "pmipermonth");
-                  }}
-                />
+              <div className="pb-4 relative flex flex-col">
+                <p className="pb-2 w-full text-sm font-bold">PMI per month</p>
+                <div className="relative flex items-center">
+                  <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
+                    $
+                  </span>
+                  <input
+                    className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
+                    type="text"
+                    value={formatNumberWithCommas(mortgageInputs.pmipermonth)}
+                    onKeyUp={(e) => {
+                      handleValidKey(e);
+                    }}
+                    onChange={(e) => {
+                      handleValidInput(e, "pmipermonth");
+                    }}
+                  />
+                </div>
               </div>
-              <div className="pb-4">
-                <p className="pb-2 w-full text-sm font-semibold ">
-                  HOA fees per month
+              <div className="pb-4 relative flex flex-col">
+                <p className="pb-2 w-full text-sm font-bold">
+                  HHOA fees per month
                 </p>
-                <input
-                  className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
-                  type="text"
-                  value={formatNumberWithCommas(mortgageInputs.hoafee)}
-                  onKeyUp={(e) => {
-                    handleValidKey(e);
-                  }}
-                  onChange={(e) => {
-                    handleValidInput(e, "hoafee");
-                  }}
-                />
+                <div className="relative flex items-center">
+                  <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
+                    $
+                  </span>
+                  <input
+                    className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
+                    type="text"
+                    value={formatNumberWithCommas(mortgageInputs.hoafee)}
+                    onKeyUp={(e) => {
+                      handleValidKey(e);
+                    }}
+                    onChange={(e) => {
+                      handleValidInput(e, "hoafee");
+                    }}
+                  />
+                </div>
               </div>
             </div>
           )}
