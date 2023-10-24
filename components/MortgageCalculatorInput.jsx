@@ -5,7 +5,7 @@ export function MortgageCalculatorInput() {
   const [optionalExpensesOpen, setOptionalExpensesOpen] = useState(false);
 
   // const [isValid, setIsValid] = useState(true);
-  const [inputValue, setInputValue] = useState("")
+  const [inputValue, setInputValue] = useState("");
 
   const initialInputState = {
     homeprice: 425000,
@@ -30,9 +30,7 @@ export function MortgageCalculatorInput() {
   // L = Mortgage loan amount
   // C = Your mortgage interest rate
   // N = Number of monthly payments over
-  const L =
-    mortgageInputs.homepri -
-    mortgageInputs.downpayment;
+  const L = mortgageInputs.homeprice - mortgageInputs.downpayment;
   const C = mortgageInputs.interestrate / 12 / 100;
   const N = mortgageInputs.loanterm * 12;
   const P = ((L * (C * (1 + C) ** N)) / ((1 + C) ** N - 1))
@@ -57,77 +55,59 @@ export function MortgageCalculatorInput() {
     mortgageInputs.monthlyPayment,
   ]);
 
-  // Handles input case, permitting only nums.
-  // Might use switch case to handle diff input fields,
-  // ie, interest rate which allows a single decimal
+  // Consider whether I am mutating the state. have a useState for 
+    // fields. Only need to define 1 validKeys.
+    // Based on field, setValidKeys(to whatever)
 
-
-  // const handleValidKey = (e, field, value) => {
-  //   const key = e.key;
-  //   const interestRegex = /^[0-9]{1,5}(?:\.[0-9]{0,3})?$/;
-
-  //   if (field === "interestrate") {
-  //     console.log("interest!")
-  //     setIsValid(key >= "0" && key <= "9") || key === "Backspace" || key === ".";
-  //     if (value.includes(".")) {
-  //       console.log('interest, but no .')
-  //       setIsValid(key >= "0" && key <= "9") || key === "Backspace";
-  //     }
-  //   } else {
-  //     console.log('not interest')
-  //     setIsValid(key >= "0" && key <= "9") || key === "Backspace";
-  //   }
-
-  //   const numberValue = parseFloat(value)
-
-  //   if (interestRegex.test(value) && numberValue < 100) {
-  //     setIsValid(true)
-  //     console.log("Good");
-  //   } else if (key === "Backspace") {
-  //     setIsValid(true)
-  //     console.log("Good (Backspace)");
-  //   } else if (value === "") {
-  //     setIsValid(true)
-  //   } else {
-  //     setIsValid(false)
-  //     console.log("Bad");
-  //   }
-
-  //   if (!isValid) {
-  //     e.preventDefault();
-  //   }
-  // };
-  
-  // Below is savestate 1, inputs only accept numbers
-  const handleValidKey = (e) => {
+  const handleValidKey = (e, field) => {
     const keyAscii = e.key.charCodeAt(0) || e.which;
-    const isValid = (keyAscii >= 48 && keyAscii <= 57) || keyAscii === 66 || keyAscii === 8;
+    const value = e.target.value
+    console.log('Ascii for ' + e.key + ' is ' + keyAscii)
+    let isValid;
 
+    if (field === "interestrate") {
+      isValid = (keyAscii >= 46 && keyAscii <= 57) || keyAscii === 8 || keyAscii === 66;
+    } else {
+      isValid = (keyAscii >= 46 && keyAscii <= 57) || keyAscii === 8 || keyAscii === 66;
+    }
+    // I am trying to figure this out.
+    // When input value is "" or NaN, then make the value 0 for all input fields
     if (!isValid) {
       e.preventDefault();
     }
-  }
+  };
 
-    // Next, make error state for home price. Must be > 10000
+  // Next, make error state for home price. Must be > 10000
   const handleValidHomeprice = (e) => {
-    const homeprice = mortgageInputs.homeprice
-    console.log('Homeprice:' +  homeprice)
+    const homeprice = mortgageInputs.homeprice;
+    console.log("Homeprice:" + homeprice);
 
-    homeprice > 10000 ? console.log('true') : console.log('false')
-  }
+    homeprice > 10000 ? console.log("true") : console.log("false");
+  };
 
   const handleValidDownPayment = (e) => {
-    const homeprice = mortgageInputs.homeprice
-    const downpayment = mortgageInputs.downpayment
+    const homeprice = mortgageInputs.homeprice;
+    const downpayment = mortgageInputs.downpayment;
 
-    homeprice > downpayment ? console.log('All good') : console.log('down p cant b bigger than house price')
-  }
+    homeprice > downpayment
+      ? console.log("All good")
+      : console.log("down p cant b bigger than house price");
+  };
+
+  const handleValidInterestRate = (e) => {
+    const interest = mortgageInputs.interestrate;
+    console.log(interest)
+
+    // Code implemented to make backspace 0 instead of NaN
+    // Next step is to create interest rate validation.
+    // After, add validation styles for valid/invalid
+  };
 
   // .replace() removes commas before calculation for P.
   // Consider refactor. Rather than change state with comma and remove b4 calc,
   // consider keeping state as num, and commas only for input display
   const formatNumberWithCommas = (value) => {
-    const stringValue = value.toLocaleString()
+    const stringValue = value.toLocaleString();
     return stringValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
@@ -145,15 +125,17 @@ export function MortgageCalculatorInput() {
                 className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                 type="text"
                 value={formatNumberWithCommas(mortgageInputs.homeprice)}
-                onKeyUp={(e) => {handleValidKey(e);
+                onKeyUp={(e) => {
+                  handleValidKey(e);
                   handleValidHomeprice();
                 }}
                 onChange={(e) => {
                   const value = e.target.value;
-                  const numericValue = parseFloat(value.replace(/,/g, ""))
+                  const numericValue = parseFloat(value.replace(/,/g, ""));
+                  const newValue = isNaN(numericValue) ? 0 : numericValue
                   setMortgageInputs({
                     ...mortgageInputs,
-                    homeprice: numericValue,
+                    homeprice: newValue,
                   });
                 }}
               />
@@ -171,11 +153,11 @@ export function MortgageCalculatorInput() {
                 value={formatNumberWithCommas(mortgageInputs.downpayment)}
                 onKeyUp={(e) => {
                   handleValidKey(e);
-                  handleValidDownPayment()
+                  handleValidDownPayment();
                 }}
                 onChange={(e) => {
                   const value = e.target.value.replace(/,/g, "");
-                  const numericValue = parseFloat(value)
+                  const numericValue = parseFloat(value);
                   setMortgageInputs({
                     ...mortgageInputs,
                     downpayment: numericValue,
@@ -190,7 +172,7 @@ export function MortgageCalculatorInput() {
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
               value={mortgageInputs.loanterm}
-              onKeyDown={(e) => {
+              onKeyUp={(e) => {
                 handleValidKey(e);
               }}
               onChange={(e) => {
@@ -208,24 +190,24 @@ export function MortgageCalculatorInput() {
                 %
               </span>
               <input
-                // className={`py-2 px-2 border  rounded-md 
+                // className={`py-2 px-2 border  rounded-md
                 //  focus:outline-none w-full appearance-none ${
-                //    isValid ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700" : "border-red-500 bg-red-100/50"
+                //    handleValidHomeprice ? "border-zinc-500 hover:bg-blue-100/50 focus:border-blue-700" : "border-red-500 bg-red-100/50"
                 //  }`}
-                type="text"
-                id="interestrate"
+                type="number"
                 value={mortgageInputs.interestrate}
-                // onKeyPress={(e) => {
-                //   handleValidKey(e, "interestrate", e.target.value);
-                // }}
-                onKeyDown={(e) => {
-                  handleValidKey(e);
+                onKeyUp={(e) => {
+                  // handleValidKey(e);
+                  // handleValidInterestRate(e);
+
+                  // NEW PLAN. Interest is type number. Duh. No comma formatting.
                 }}
                 onChange={(e) => {
-                  const value = e.target.value.replace(/./g, "");
+                  const value = e.target.value;
+                  const numericValue = parseFloat(value);
                   setMortgageInputs({
                     ...mortgageInputs,
-                    interestrate: e.target.value,
+                    interestrate: numericValue,
                   });
                 }}
               />
@@ -252,7 +234,7 @@ export function MortgageCalculatorInput() {
         <div>
           <button
             onClick={() => {
-              toggleOptionalExpenses(); 
+              toggleOptionalExpenses();
             }}
             type="button"
             className="inline-flex items-center w-full py-2 my-4 text-blue-700 font-bold focus:outline-none hover:underline"
