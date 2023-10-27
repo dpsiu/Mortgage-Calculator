@@ -1,5 +1,6 @@
 import { set } from "date-fns";
 import React, { useState, useEffect } from "react";
+import { useSharedContext } from "../src/SharedContext";
 
 export function MortgageCalculatorInput() {
   const [optionalExpensesOpen, setOptionalExpensesOpen] = useState(false);
@@ -14,10 +15,12 @@ export function MortgageCalculatorInput() {
     homeownerinsurance: 66,
     pmipermonth: 0,
     hoafee: 0,
-    monthlyPayment: "",
+    monthlyPayment: 0,
   };
 
   const [mortgageInputs, setMortgageInputs] = useState(initialInputState);
+  const {sharedData, setSharedData} = useSharedContext()
+
 
   // L = Mortgage loan amount
   // C = Your mortgage interest rate
@@ -33,14 +36,14 @@ export function MortgageCalculatorInput() {
   const HOAFee = mortgageInputs.hoafee;
   const OptionalExpenses = PropTax + HOAI + PMI + HOAFee;
 
-  const P = ((L * (C * (1 + C) ** N)) / ((1 + C) ** N - 1) + OptionalExpenses)
-    .toFixed(2)
+  const P = (L * ((C * ((1 + C) ** N)) / (((1 + C) ** N) - 1)) + OptionalExpenses)
+    .toFixed(0)
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   useEffect(() => {
     setMortgageInputs({
       ...mortgageInputs,
-      monthlyPayment: P,
+      monthlyPayment: P.replace(/,/g, ""),
     });
   }, [
     mortgageInputs.homeprice,
@@ -70,13 +73,17 @@ export function MortgageCalculatorInput() {
     const value = e.target.value;
     const numericValue = parseFloat(value.replace(/,/g, ""));
     const newValue = isNaN(numericValue) ? 0 : numericValue;
+    
     setMortgageInputs({
       ...mortgageInputs,
       [field]: newValue,
     });
+    setSharedData({
+      ...mortgageInputs,
+      [field]:newValue,
+    })
   };
 
-  // Next, make error state for home price. Must be > 10000
   const handleValidHomeprice = (e) => {
     const homeprice = mortgageInputs.homeprice;
     const downpayment = mortgageInputs.downpayment;
@@ -86,7 +93,6 @@ export function MortgageCalculatorInput() {
   const handleValidDownPayment = (e) => {
     const homeprice = mortgageInputs.homeprice;
     const downpayment = mortgageInputs.downpayment;
-
     return downpayment < homeprice;
   };
 
