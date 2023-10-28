@@ -14,7 +14,6 @@ function App() {
           <h1 className="w-full text-3xl text-left pt-6 pb-2 px-2">Mortgage Calculator</h1>
           <MortgageCalculatorInput/>
           <MortgageSummary/>
-          <PieChart/>
         </div>
       </SharedContextProvider>
     </>

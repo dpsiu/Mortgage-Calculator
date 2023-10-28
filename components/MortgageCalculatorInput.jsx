@@ -18,44 +18,42 @@ export function MortgageCalculatorInput() {
     monthlyPayment: 0,
   };
 
-  const [mortgageInputs, setMortgageInputs] = useState(initialInputState);
-  const {sharedData, setSharedData} = useSharedContext()
-
+  const { sharedData, setSharedData } = useSharedContext();
 
   // L = Mortgage loan amount
   // C = Your mortgage interest rate
   // N = Number of monthly payments over
   // P = Monthly mortgage payment
 
-  const L = mortgageInputs.homeprice - mortgageInputs.downpayment;
-  const C = mortgageInputs.interestrate / 12 / 100;
-  const N = mortgageInputs.loanterm * 12;
-  const PropTax = mortgageInputs.propertytax;
-  const HOAI = mortgageInputs.homeownerinsurance;
-  const PMI = mortgageInputs.pmipermonth;
-  const HOAFee = mortgageInputs.hoafee;
+  const L = sharedData.homeprice - sharedData.downpayment;
+  const C = sharedData.interestrate / 12 / 100;
+  const N = sharedData.loanterm * 12;
+  const PropTax = sharedData.propertytax;
+  const HOAI = sharedData.homeownerinsurance;
+  const PMI = sharedData.pmipermonth;
+  const HOAFee = sharedData.hoafee;
   const OptionalExpenses = PropTax + HOAI + PMI + HOAFee;
 
-  const P = (L * ((C * ((1 + C) ** N)) / (((1 + C) ** N) - 1)) + OptionalExpenses)
+  const P = (L * ((C * (1 + C) ** N) / ((1 + C) ** N - 1)) + OptionalExpenses)
     .toFixed(0)
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   useEffect(() => {
-    setMortgageInputs({
-      ...mortgageInputs,
+    setSharedData({
+      ...sharedData,
       monthlyPayment: P.replace(/,/g, ""),
     });
   }, [
-    mortgageInputs.homeprice,
-    mortgageInputs.downpayment,
-    mortgageInputs.loanterm,
-    mortgageInputs.interestrate,
-    mortgageInputs.zipcode,
-    mortgageInputs.propertytax,
-    mortgageInputs.homeownerinsurance,
-    mortgageInputs.pmipermonth,
-    mortgageInputs.hoafee,
-    mortgageInputs.monthlyPayment,
+    sharedData.homeprice,
+    sharedData.downpayment,
+    sharedData.loanterm,
+    sharedData.interestrate,
+    sharedData.zipcode,
+    sharedData.propertytax,
+    sharedData.homeownerinsurance,
+    sharedData.pmipermonth,
+    sharedData.hoafee,
+    sharedData.monthlyPayment,
   ]);
 
   const handleValidKey = (e, field) => {
@@ -73,36 +71,32 @@ export function MortgageCalculatorInput() {
     const value = e.target.value;
     const numericValue = parseFloat(value.replace(/,/g, ""));
     const newValue = isNaN(numericValue) ? 0 : numericValue;
-    
-    setMortgageInputs({
-      ...mortgageInputs,
+
+    setSharedData({
+      ...sharedData,
       [field]: newValue,
     });
-    setSharedData({
-      ...mortgageInputs,
-      [field]:newValue,
-    })
   };
 
   const handleValidHomeprice = (e) => {
-    const homeprice = mortgageInputs.homeprice;
-    const downpayment = mortgageInputs.downpayment;
+    const homeprice = sharedData.homeprice;
+    const downpayment = sharedData.downpayment;
     return homeprice > 10000 && homeprice >= downpayment;
   };
 
   const handleValidDownPayment = (e) => {
-    const homeprice = mortgageInputs.homeprice;
-    const downpayment = mortgageInputs.downpayment;
+    const homeprice = sharedData.homeprice;
+    const downpayment = sharedData.downpayment;
     return downpayment < homeprice;
   };
 
   const handleValidInterestRate = (e) => {
-    const interest = mortgageInputs.interestrate;
+    const interest = sharedData.interestrate;
     return interest < 100;
   };
 
   const handleValidLoanTerm = (e) => {
-    const loanTerm = mortgageInputs.loanterm;
+    const loanTerm = sharedData.loanterm;
     return loanTerm <= 30;
   };
 
@@ -138,7 +132,7 @@ export function MortgageCalculatorInput() {
                     : "border-red-500 bg-red-100/50"
                 }`}
                 type="text"
-                value={formatNumberWithCommas(mortgageInputs.homeprice)}
+                value={formatNumberWithCommas(sharedData.homeprice)}
                 onKeyUp={(e) => {
                   handleValidKey(e);
                   handleValidHomeprice();
@@ -167,7 +161,7 @@ export function MortgageCalculatorInput() {
                     : "border-red-500 bg-red-100/50"
                 }`}
                 type="text"
-                value={formatNumberWithCommas(mortgageInputs.downpayment)}
+                value={formatNumberWithCommas(sharedData.downpayment)}
                 onKeyUp={(e) => {
                   handleValidKey(e);
                   handleValidDownPayment();
@@ -193,7 +187,7 @@ export function MortgageCalculatorInput() {
                     : "border-red-500 bg-red-100/50"
                 }`}
               type="number"
-              value={mortgageInputs.loanterm}
+              value={sharedData.loanterm}
               onKeyUp={(e) => {
                 handleValidKey(e);
                 handleValidLoanTerm();
@@ -223,7 +217,7 @@ export function MortgageCalculatorInput() {
                      : "border-red-500 bg-red-100/50"
                  }`}
                 type="number"
-                value={mortgageInputs.interestrate}
+                value={sharedData.interestrate}
                 onChange={(e) => {
                   handleValidInterestRate();
                   handleValidInput(e, "interestrate");
@@ -244,7 +238,7 @@ export function MortgageCalculatorInput() {
             <input
               className="py-2 px-2 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
               type="number"
-              value={mortgageInputs.zipcode}
+              value={sharedData.zipcode}
               onKeyUp={(e) => {
                 handleValidKey(e);
               }}
@@ -282,7 +276,7 @@ export function MortgageCalculatorInput() {
                   <input
                     className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                     type="text"
-                    value={formatNumberWithCommas(mortgageInputs.propertytax)}
+                    value={formatNumberWithCommas(sharedData.propertytax)}
                     onKeyUp={(e) => {
                       handleValidKey(e);
                     }}
@@ -304,7 +298,7 @@ export function MortgageCalculatorInput() {
                     className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                     type="text"
                     value={formatNumberWithCommas(
-                      mortgageInputs.homeownerinsurance
+                      sharedData.homeownerinsurance
                     )}
                     onKeyUp={(e) => {
                       handleValidKey(e);
@@ -324,7 +318,7 @@ export function MortgageCalculatorInput() {
                   <input
                     className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                     type="text"
-                    value={formatNumberWithCommas(mortgageInputs.pmipermonth)}
+                    value={formatNumberWithCommas(sharedData.pmipermonth)}
                     onKeyUp={(e) => {
                       handleValidKey(e);
                     }}
@@ -345,7 +339,7 @@ export function MortgageCalculatorInput() {
                   <input
                     className="py-2 px-5 border border-zinc-500 rounded-md hover:bg-blue-100/50 focus:border-blue-700 focus:outline-none w-full appearance-none"
                     type="text"
-                    value={formatNumberWithCommas(mortgageInputs.hoafee)}
+                    value={formatNumberWithCommas(sharedData.hoafee)}
                     onKeyUp={(e) => {
                       handleValidKey(e);
                     }}
@@ -361,7 +355,7 @@ export function MortgageCalculatorInput() {
         <div className="relative flex items-center text-lg font-bold">
           <h3>
             Total monthly payment = <span>$ </span>
-            {mortgageInputs.monthlyPayment}
+            {sharedData.monthlyPayment}
           </h3>
         </div>
       </div>
