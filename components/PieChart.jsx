@@ -16,22 +16,17 @@ export function PieChart() {
   const optionalExpenses = (propertyTax + hoaInsurance + pmi + hoafee)
   const principalandinterest = (monthlyPayment-optionalExpenses)
 
-  console.log('homeprice: ' + sharedData.homeprice)
-  console.log('downpayment: ' + sharedData.downpayment)
-  console.log('loanterm: ' + sharedData.loanterm)
-  console.log('homeinterestrateprice: ' + sharedData.interestrate)
+  // console.log('homeprice: ' + sharedData.homeprice)
+  // console.log('downpayment: ' + sharedData.downpayment)
+  // console.log('loanterm: ' + sharedData.loanterm)
+  // console.log('homeinterestrateprice: ' + sharedData.interestrate)
 
-  console.log('propertytax: ' + sharedData.propertytax)
-  console.log('homeownerinsurance: ' + sharedData.homeownerinsurance)
-  console.log('pmipermonth: ' + sharedData.pmipermonth)
-  console.log('hoafee: ' + sharedData.hoafee)
-  console.log('monthlyPayment: ' + sharedData.monthlyPayment)
-  
-// ^^^ these set the initialState. Perhaps work towards making sharedData
-// the only useState across components (replace mortgageInputs.)
-// But 1st, ENSURE that graph responds in line with values.
-// Double check React asynchronous nature and whether chart 
-// values are as they should be.
+  // console.log('propertytax: ' + sharedData.propertytax)
+  // console.log('homeownerinsurance: ' + sharedData.homeownerinsurance)
+  // console.log('pmipermonth: ' + sharedData.pmipermonth)
+  // console.log('hoafee: ' + sharedData.hoafee)
+  // console.log('monthlyPayment: ' + sharedData.monthlyPayment)
+
 
   const data = {
     labels: [
@@ -43,7 +38,7 @@ export function PieChart() {
     ],
     datasets: [
       {
-        label: "Price: ",
+        label: "Price",
         data: [principalandinterest, propertyTax, hoaInsurance, pmi, hoafee],
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
