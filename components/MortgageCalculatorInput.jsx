@@ -117,7 +117,7 @@ export function MortgageCalculatorInput() {
 
   return (
     <>
-      <div className="flex flex-col p-4 w-full">
+      <div className="flex flex-col p-4 w-full min-w-min md:max-w-lg lg:max-w-lg">
         <div>
           <div className="pb-4 relative flex flex-col">
             <p className="pb-2 w-full text-sm font-bold">Home Price</p>
@@ -352,12 +352,12 @@ export function MortgageCalculatorInput() {
             </div>
           )}
         </div>
-        <div className="relative flex items-center text-lg font-bold">
+        {/* <div className="relative flex items-center text-lg font-bold">
           <h3>
             Total monthly payment = <span>$ </span>
             {sharedData.monthlyPayment}
           </h3>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -11,7 +11,7 @@ function App() {
     <>
       <SharedContextProvider>
         <div className="flex flex-col justify-center items-center p-4 mx-auto">
-          <h1 className="w-full text-3xl text-left pt-6 pb-2 px-2">Mortgage Calculator</h1>
+          <h1 className="w-full flex flex-col text-3xl text-left pt-6 pb-2 px-2 md:flex-row">Mortgage Calculator</h1>
           <MortgageCalculatorInput/>
           <MortgageSummary/>
         </div>
