@@ -8,14 +8,14 @@ export function MortgageSummary() {
   console.log(sharedData);
   return (
     <>
-      <div className="md:max-w-xl">
-        <PieChart />
-        <div className="relative flex items-center text-lg font-bold my-4">
-          <h3>
-            Total monthly payment = <span>$ </span>
-            {sharedData.monthlyPayment}
-          </h3>
+      <div className="flex flex-col ">
+        <div className="chart-container relative h-100vh w-100vw">
+          <PieChart id="chart" />
         </div>
+        <h3 className="relative flex items-center text-lg font-bold my-4 md:max-w-xl ">
+          Total monthly payment = <span>$ </span>
+          {sharedData.monthlyPayment}
+        </h3>
       </div>
     </>
   );
