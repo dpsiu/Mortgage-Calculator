@@ -12,7 +12,7 @@ export function MortgageSummary() {
         <div className="chart-container relative h-[60vh] w-[80vw] md:h-[50vh] md:w-[40vw]">
           <PieChart id="chart" />
         </div>
-        <h3 className="relative flex text-lg font-bold my-4 md:max-w-xl ">
+        <h3 className="relative flex text-lg font-bold my-4 pb-6 md:max-w-xl ">
           Total monthly payment = <span>$</span>
           {sharedData.monthlyPayment}
         </h3>

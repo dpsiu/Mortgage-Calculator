@@ -3,14 +3,15 @@ import { MortgageCalculatorInput } from "../components/MortgageCalculatorInput";
 import { MortgageSummary } from "../components/MortgageSummary";
 import { PieChart } from "../components/PieChart";
 import { SharedContextProvider } from "./SharedContext";
+import { Footer } from "../components/Footer";
 import "./App.css";
 
 function App() {
   return (
     <>
       <SharedContextProvider>
-        <div className="flex flex-col justify-center items-center p-4 mx-auto md:max-w-7xl">
-          <h1 className="w-full text-3xl text-left pt-6 pb-2">
+        <div className="flex flex-col justify-center items-center p-4 mx-auto md:max-w-7xl text-stone-700">
+          <h1 className="w-full text-3xl text-left pt-6 pb-2 font-bold text-blue-700">
             Mortgage Calculator
           </h1>
           <div
@@ -23,6 +24,7 @@ function App() {
               <MortgageSummary />
             </div>
           </div>
+          <Footer/>
         </div>
       </SharedContextProvider>
     </>
