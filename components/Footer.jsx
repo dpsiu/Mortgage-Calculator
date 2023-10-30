@@ -1,10 +1,10 @@
 export function Footer() {
   return (
     <>
-      <p className="text-center pt-10 text-stone-700 dark:text-stone-300 ">
-        Site built with React and Tailwind CSS
+      <p className="text-center pt-10 ">
+        Site built with React, Tailwind CSS, and Chart.js
       </p>
-      <div className="w-full text-lg flex justify-center items-center gap-4 text-stone-700 py-2 dark:text-white">
+      <div className="w-full text-lg flex justify-center items-center gap-4">
         <p className="p-2">2023</p>
         <a
           className="flex gap-4 items-center p-2"
