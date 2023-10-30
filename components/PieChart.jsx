@@ -12,9 +12,9 @@ export function PieChart() {
   const pmi = sharedData.pmipermonth;
   const hoafee = sharedData.hoafee;
 
-  const monthlyPayment = sharedData.monthlyPayment
-  const optionalExpenses = (propertyTax + hoaInsurance + pmi + hoafee)
-  const principalandinterest = (monthlyPayment-optionalExpenses)
+  const monthlyPayment = sharedData.monthlyPayment;
+  const optionalExpenses = propertyTax + hoaInsurance + pmi + hoafee;
+  const principalandinterest = monthlyPayment - optionalExpenses;
 
   // console.log('homeprice: ' + sharedData.homeprice)
   // console.log('downpayment: ' + sharedData.downpayment)
@@ -26,7 +26,6 @@ export function PieChart() {
   // console.log('pmipermonth: ' + sharedData.pmipermonth)
   // console.log('hoafee: ' + sharedData.hoafee)
   // console.log('monthlyPayment: ' + sharedData.monthlyPayment)
-
 
   const data = {
     labels: [
@@ -41,23 +40,37 @@ export function PieChart() {
         label: "Price",
         data: [principalandinterest, propertyTax, hoaInsurance, pmi, hoafee],
         backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(120, 0, 120, 0.2)",
+          "rgba(44, 143, 242, 0.2)",
+          "rgba(255, 80, 95, 0.2)",
+          "rgba(244, 184, 45, 0.2)",
+          "rgba(59, 226, 131, 0.2)",
+          "rgba(212, 45, 244, 0.2)",
         ],
         borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(120, 0, 120, 1)",
+          "rgba(44, 143, 242, 1)",
+          "rgba(255, 80, 95, 1)",
+          "rgba(244, 184, 45, 1)",
+          "rgba(59, 226, 131, 1)",
+          "rgba(212, 45, 244, 1)",
         ],
         borderWidth: 1,
       },
     ],
   };
 
-  return <Doughnut data={data} />;
+  const options = {
+    plugins: {
+      legend: {
+          labels: {
+              // This more specific font property overrides the global property
+              font: {
+                  size: 16
+              }
+          }
+      }
+  },
+    maintainAspectRatio: false,
+  };
+
+  return <Doughnut data={data} options={options}/>;
 }
