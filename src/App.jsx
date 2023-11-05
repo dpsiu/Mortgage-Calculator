@@ -4,6 +4,7 @@ import { MortgageSummary } from "../components/MortgageSummary";
 import { PieChart } from "../components/PieChart";
 import { SharedContextProvider } from "./SharedContext";
 import { Footer } from "../components/Footer";
+import { HowTo } from "../components/HowTo";
 import "./App.css";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
               <MortgageSummary />
             </div>
           </div>
+          <HowTo/>
           <Footer/>
         </div>
       </SharedContextProvider>
