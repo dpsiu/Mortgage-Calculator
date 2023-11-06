@@ -25,6 +25,7 @@ function App() {
               <MortgageSummary />
             </div>
           </div>
+          <HowTo />
           <Footer/>
         </div>
       </SharedContextProvider>
