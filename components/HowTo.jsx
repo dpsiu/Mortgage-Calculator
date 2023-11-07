@@ -89,6 +89,56 @@ export function HowTo() {
             </p>
           </div>
         </div>
+        <div className="flex flex-col gap-4">
+          <h1 className="text-3xl font-semibold border-b-2 border-gray-500 py-4 m-4">
+            Terms Explained
+          </h1>
+          <p className="mx-4 text-lg">
+            Using an online mortgage calculator can help you quickly and
+            accurately predict your monthly mortgage payment with just a few
+            pieces of information. It can also show you the total amount of
+            interest you"ll pay over the life of your mortgage. To use this
+            calculator, you"ll need the following information:
+          </p>
+          <p className="mx-4 text-lg">
+            <span className="font-bold">Home price</span> - This is the dollar amount you expect to pay for a home.
+          </p>
+          <p className="mx-4 text-lg">
+            <span className="font-bold">Down payment</span> - The down payment is money you give to the home's
+            seller. At least 20 percent down typically lets you avoid mortgage
+            insurance.
+          </p>
+          <p className="mx-4 text-lg">
+            <span className="font-bold">Loan amount</span> - If you're getting a mortgage to buy a new home, you
+            can find this number by subtracting your down payment from the
+            home's price. If you're refinancing, this number will be the
+            outstanding balance on your mortgage.
+          </p>
+          <p className="mx-4 text-lg">
+            <span className="font-bold">Loan term (years)</span> - This is the length of the mortgage you're
+            considering. For example, if you're buying a home, you might choose
+            a mortgage loan that lasts 30 years, which is the most common, as it
+            allows for lower monthly payments by stretching the repayment period
+            out over three decades. On the other hand, a homeowner who is
+            refinancing may opt for a loan with a shorter repayment period, like
+            15 years. This is another common mortgage term that allows the
+            borrower to save money by paying less total interest. However,
+            monthly payments are higher on 15-year mortgages than 30-year ones,
+            so it can be more of a stretch for the household budget, especially
+            for first-time homebuyers.
+          </p>
+          <p className="mx-4 text-lg">
+            <span className="font-bold">Interest rate</span> - Estimate the interest rate on a new mortgage by
+            checking Bankrate's mortgage rate tables for your area. Once you
+            have a projected rate (your real-life rate may be different
+            depending on your overall financial and credit picture), you can
+            plug it into the calculator.
+          </p>
+          <p className="mx-4 text-lg">
+            <span className="font-bold">Loan start date</span> - Select the month, day and year when your mortgage
+            payments will start.{" "}
+          </p>
+        </div>
       </div>
     </>
   );

@@ -55,7 +55,7 @@ export function MortgageCalculatorInput() {
     sharedData.monthlyPayment,
   ]);
 
-  const handleValidKey = (e, field) => {
+  const handleValidKey = (e) => {
     const keyAscii = e.key.charCodeAt(0) || e.which;
     const value = e.target.value;
     let isValid =
@@ -98,10 +98,6 @@ export function MortgageCalculatorInput() {
     const loanTerm = sharedData.loanterm;
     return loanTerm <= 30;
   };
-
-  // .replace() removes commas before calculation for P.
-  // Consider refactor. Rather than change state with comma and remove b4 calc,
-  // consider keeping state as num, and commas only for input display
 
   // formatNumWCommas is primarily for display. Consider refactor to
   //  keep actual state as numbers
@@ -253,12 +249,15 @@ export function MortgageCalculatorInput() {
               toggleOptionalExpenses();
             }}
             type="button"
-            className="inline-flex items-center w-full py-2 my-4 text-blue-700 font-bold focus:outline-none hover:underline"
+            className="inline-flex items-center w-full py-2 my-4 text-blue-700 font-bold focus:outline-none no-underline"
             id="options-menu"
           >
             Optional: Taxes, Insurance, HOA
             {/* Dropdown arrow */}
-            <span className="material-symbols-outlined px-2 hover:no-underline! focus:no-underline! no-underline!">
+            {/* <span className="material-symbols-outlined px-2 hover:no-underline! focus:no-underline! no-underline!">
+              expand_more
+            </span> */}
+            <span className={`material-symbols-outlined px-2 ${optionalExpensesOpen ? "rotate-180" : ''}`}>
               expand_more
             </span>
           </button>

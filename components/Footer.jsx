@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <>
-      <p className="text-center pt-10 ">
+      <p className="text-center pt-12 ">
         Site built with React, Tailwind CSS, and Chart.js
       </p>
       <div className="w-full text-lg flex justify-center items-center gap-4">
